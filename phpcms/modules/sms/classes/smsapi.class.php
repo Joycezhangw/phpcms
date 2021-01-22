@@ -40,6 +40,10 @@ class smsapi
                 'OutId' => $scense,
                 'TemplateParam' => '{"code":"'.$content.'"}',
             ])->execute();
+            $sms_report_db = pc_base::load_model('sms_report_model');
+            $send_userid = param::get_cookie('_userid') ? intval(param::get_cookie('_userid')) : 0;
+            $ip = ip();
+            $sms_report_db->insert(array('mobile'=>$mobile,'posttime'=>SYS_TIME,'id_code'=>$scense,'send_userid'=>$send_userid,'status'=>200,'msg'=>$new_content,'return_id'=>'','ip'=>$ip));
             return 200;
         } catch (Exception $exception) {
             return $exception->getCode();
