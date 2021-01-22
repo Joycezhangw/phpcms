@@ -75,13 +75,4 @@ class smsapi
         return $string;
     }
 
-    /**
-     *
-     * 接口短信状态
-     */
-    private function _sms_status() {
-        pc_base::load_app_func('global','sms');
-        return sms_status(0,1);
-    }
-
 }
