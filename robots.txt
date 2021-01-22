@@ -1,0 +1,9 @@
+#
+# robots.txt for PHPCMS v9
+#
+User-agent: * 
+Disallow: /caches
+Disallow: /phpcms
+Disallow: /install
+Disallow: /api
+Disallow: /admin.php
