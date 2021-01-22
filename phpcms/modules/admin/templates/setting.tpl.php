@@ -15,11 +15,7 @@ include $this->admin_tpl('header');?>
 		
 		$("#errorlog_size").formValidator({onshow:"<?php echo L('setting_errorlog_hint')?>",onfocus:"<?php echo L('setting_input').L('setting_error_log_size')?>"}).inputValidator({onerror:"<?php echo L('setting_error_log_size').L('setting_input_error')?>"}).regexValidator({regexp:"num",datatype:"enum",onerror:"<?php echo L('setting_errorlog_type')?>"});	
 			
-		$("#phpsso_api_url").formValidator({onshow:"<?php echo L('setting_phpsso_type')?>",onfocus:"<?php echo L('setting_phpsso_type')?>",tipcss:{width:'300px'},empty:false}).inputValidator({onerror:"<?php echo L('setting_phpsso_type')?>"}).regexValidator({regexp:"http(s?):\/\/(.+)[^/]$",onerror:"<?php echo L('setting_phpsso_type')?>"});
-		
-		$("#phpsso_appid").formValidator({onshow:"<?php echo L('input').L('setting_phpsso_appid')?>",onfocus:"<?php echo L('input').L('setting_phpsso_appid')?>"}).regexValidator({regexp:"^\\d{1,8}$",onerror:"<?php echo L('setting_phpsso_appid').L('must_be_number')?>"});
-		$("#phpsso_version").formValidator({onshow:"<?php echo L('input').L('setting_phpsso_version')?>",onfocus:"<?php echo L('input').L('setting_phpsso_version')?>"}).regexValidator({regexp:"^\\d{1,8}$",onerror:"<?php echo L('setting_phpsso_version').L('must_be_number')?>"});
-		$("#phpsso_auth_key").formValidator({onshow:"<?php echo L('input').L('setting_phpsso_auth_key')?>",onfocus:"<?php echo L('input').L('setting_phpsso_auth_key')?>"}).regexValidator({regexp:"^\\w{32}$",onerror:"<?php echo L('setting_phpsso_auth_key').L('must_be_32_w')?>"});
+
 	})
 //-->
 </script>
@@ -29,9 +25,7 @@ include $this->admin_tpl('header');?>
 <ul class="tabBut cu-li">
             <li id="tab_setting_1" class="on" onclick="SwapTab('setting','on','',5,1);"><?php echo L('setting_basic_cfg')?></li>
             <li id="tab_setting_2" onclick="SwapTab('setting','on','',5,2);"><?php echo L('setting_safe_cfg')?></li>
-            <li id="tab_setting_3" onclick="SwapTab('setting','on','',5,3);"><?php echo L('setting_sso_cfg')?></li>
             <li id="tab_setting_4" onclick="SwapTab('setting','on','',5,4);"><?php echo L('setting_mail_cfg')?></li>
-			<li id="tab_setting_5" onclick="SwapTab('setting','on','',5,5);"><?php echo L('setting_connect')?></li>
 </ul>
 <div id="div_setting_1" class="contentList pad-10">
 <table width="100%"  class="table_form">
@@ -114,32 +108,6 @@ include $this->admin_tpl('header');?>
   </tr> 
 </table>
 </div>
-<div id="div_setting_3" class="contentList pad-10 hidden">
-<table width="100%"  class="table_form">
-  <tr>
-    <th width="120"><?php echo L('setting_phpsso')?></th>
-    <td class="y-bg">
-    <input name="setconfig[phpsso]" value="1" type="radio"  <?php echo ($phpsso=='1') ? ' checked' : ''?>> <?php echo L('setting_yes')?>&nbsp;&nbsp;&nbsp;&nbsp;
-	 <input name="setconfig[phpsso]" value="0" type="radio"  <?php echo ($phpsso=='0') ? ' checked' : ''?>> <?php echo L('setting_no')?></td>
-  </tr> 
-  <tr>
-    <th><?php echo L('setting_phpsso_appid')?></th>
-    <td class="y-bg"><input type="text" class="input-text" name="setconfig[phpsso_appid]" id="phpsso_appid" size="30" value="<?php echo $phpsso_appid ?>"/></td>
-  </tr> 
-  <tr>
-    <th><?php echo L('setting_phpsso_phpsso_api_url')?></th>
-    <td class="y-bg"><input type="text" class="input-text" name="setconfig[phpsso_api_url]" id="phpsso_api_url" size="50" value="<?php echo $phpsso_api_url ?>"/></td>
-  </tr>  
-   <tr>
-    <th><?php echo L('setting_phpsso_auth_key')?></th>
-    <td class="y-bg"><input type="text" class="input-text" name="setconfig[phpsso_auth_key]" id="phpsso_auth_key" size="50" value="<?php echo $phpsso_auth_key ?>"/></td>
-  </tr>
-   <tr>
-    <th><?php echo L('setting_phpsso_version')?></th>
-    <td class="y-bg"><input type="text" class="input-text" name="setconfig[phpsso_version]" id="phpsso_version" size="2" value="<?php echo $phpsso_version ?>"/></td>
-  </tr>      
-  </table>
-</div>
 <div id="div_setting_4" class="contentList pad-10 hidden">
 <table width="100%"  class="table_form">
   <tr>
@@ -186,45 +154,6 @@ include $this->admin_tpl('header');?>
   </table>
 </div>
 
-<div id="div_setting_5" class="contentList pad-10 hidden">
-<table width="100%"  class="table_form">
-
-
-  <tr>
-    <th width="120"><?php echo L('setting_snda_enable')?></th>
-    <td class="y-bg">
-	 APP key <input type="text" class="input-text" name="setconfig[snda_akey]" id="snda_akey" size="20" value="<?php echo $snda_akey ?>"/>
-	 APP secret key <input type="text" class="input-text" name="setconfig[snda_skey]" id="snda_skey" size="40" value="<?php echo $snda_skey ?>"/> <a href="http://code.snda.com/index/oauth" target="_blank"><?php echo L('click_register')?></a>
-    </td>
-  </tr>
-
-  <tr>
-    <th><?php echo L('setting_connect_sina')?></th>
-    <td class="y-bg">
-	App key <input type="text" class="input-text" name="setconfig[sina_akey]" id="sina_akey" size="20" value="<?php echo $sina_akey ?>"/>
-	App secret key <input type="text" class="input-text" name="setconfig[sina_skey]" id="sina_skey" size="40" value="<?php echo $sina_skey ?>"/> <a href="http://open.t.sina.com.cn/wiki/index.php/<?php echo L('connect_micro')?>" target="_blank"><?php echo L('click_register')?></a>
-	</td>
-  </tr>
-
-  <tr>
-    <th><?php echo L('setting_connect_qq')?></th>
-    <td class="y-bg">
-	App key <input type="text" class="input-text" name="setconfig[qq_akey]" id="qq_akey" size="20" value="<?php echo $qq_akey ?>"/>
-	App secret key <input type="text" class="input-text" name="setconfig[qq_skey]" id="qq_skey" size="40" value="<?php echo $qq_skey ?>"/> <a href="http://open.t.qq.com/" target="_blank"><?php echo L('click_register')?></a>
-	</td>
-  </tr> 
-  <tr>
-    <th><?php echo L('setting_connect_qqnew')?></th>
-    <td class="y-bg">
-	App I D  &nbsp;<input type="text" class="input-text" name="setconfig[qq_appid]" id="qq_appid" size="20" value="<?php echo $qq_appid;?>"/>
-	App key <input type="text" class="input-text" name="setconfig[qq_appkey]" id="qq_appkey" size="40" value="<?php echo $qq_appkey;?>"/> 
-	<?php echo L('setting_connect_qqcallback')?> <input type="text" class="input-text" name="setconfig[qq_callback]" id="qq_callback" size="40" value="<?php echo $qq_callback;?>"/>
-	<a href="http://connect.qq.com" target="_blank"><?php echo L('click_register')?></a>
-	</td>
-  </tr> 
-
-  </table>
-</div>
 
 <div class="bk15"></div>
 <input name="dosubmit" type="submit" value="<?php echo L('submit')?>" class="button">
