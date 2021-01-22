@@ -121,7 +121,7 @@ function default_list() {
   </tr>
   <tr>
     <th width="130" valign="top"><?php echo L('site_att_allow_ext')?></th>
-    <td class="y-bg"><input type="text" class="input-text" name="setting[upload_allowext]" id="upload_allowext" size="50" value="jpg|jpeg|gif|bmp|png|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|rar|zip|swf"/></td>
+    <td class="y-bg"><input type="text" class="input-text" name="setting[upload_allowext]" id="upload_allowext" size="50" value="jpg|jpeg|gif|bmp|png|doc|docx|xls|xlsx|ppt|pptx|pdf|txt|rar|zip|mp4|3gp|m3u8|webm"/></td>
   </tr>    
     <tr>
     <th><?php echo L('site_att_upload_maxsize')?> </th>
