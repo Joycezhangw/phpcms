@@ -7,7 +7,7 @@
         extract(string2array($setting));
         $disabled_page = isset($disabled_page) ? $disabled_page : 0;
         if (!$height) $height = 300;
-        $allowupload = defined('IN_ADMIN') ? 1 : $grouplist['allowattachment'] ? 1 : 0;
+        $allowupload = defined('IN_ADMIN') ? 1 : ($grouplist['allowattachment'] ? 1 : 0);
         $allowuploadexts = '';
         if ($allowupload) {
             $siteid = get_siteid();
