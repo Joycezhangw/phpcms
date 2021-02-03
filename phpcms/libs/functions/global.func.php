@@ -1815,5 +1815,41 @@ function get_vid($contentid = 0, $catid = 0, $isspecial = 0) {
 		return $minite.":".$secend;
 	}
 
- } 
+ }
+
+/**
+ * 打印信息
+ * @param $arr
+ */
+function dump($arr)
+{
+    echo "<pre>";
+    print_r($arr);
+    echo "<pre>";
+    die();
+}
+
+/**
+ * 格式化日期
+ * @param $curTime
+ * @return false|string
+ */
+function formatDateLongAgo($curTime)
+{
+    $todayLast = strtotime(date('Y-m-d 23:59:59'));
+    $agoTime = $todayLast - $curTime;
+    $agoDay = intval(floor($agoTime / 86400));
+    if ($agoDay === 0) {
+        return '今天' . date('H:i', $curTime);
+    } elseif ($agoDay === 1) {
+        return '昨天 ' . date('H:i', $curTime);
+    } elseif ($agoDay === 2) {
+        return '前天 ' . date('H:i', $curTime);
+    } elseif ($agoDay > 2 && $agoDay < 16) {
+        return $agoDay . '天前 ' . date('H:i', $curTime);
+    } else {
+        $format = date('Y') != date('Y', $curTime) ? 'Y-m-d H:i' : 'm-d H:i';
+        return date($format, $curTime);
+    }
+}
 ?>
