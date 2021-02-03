@@ -70,7 +70,9 @@ class index {
 		$content_output = new content_output($modelid,$catid,$CATEGORYS);
 		$data = $content_output->get($rs);
 		extract($data);
-		
+        $modelid = $CATEGORYS[$catid]['modelid'];
+        $type_arr = getcache('search_model_' . $siteid, 'search');
+        $typeid = $type_arr[$modelid]['typeid'];
 		//检查文章会员组权限
 		if($groupids_view && is_array($groupids_view)) {
 			$_groupid = param::get_cookie('_groupid');
@@ -233,7 +235,9 @@ class index {
 
 		$template = $setting['category_template'] ? $setting['category_template'] : 'category';
 		$template_list = $setting['list_template'] ? $setting['list_template'] : 'list';
-		
+        $modelid = $CATEGORYS[$catid]['modelid'];
+        $type_arr = getcache('search_model_' . $siteid, 'search');
+        $typeid = $type_arr[$modelid]['typeid'];
 		if($type==0) {
 			$template = $child ? $template : $template_list;
 			$arrparentid = explode(',', $arrparentid);
