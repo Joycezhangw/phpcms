@@ -69,7 +69,7 @@ if(is_array($infos)){
 <td width="20%"><img src="<?php echo file_icon($info['filename'],'gif')?>" /> <?php echo $info['filename']?> <?php echo $thumb ? '<img title="'.L('att_thumb_manage').'" src="statics/images/admin_img/havthumb.png" onclick="showthumb('.$info['aid'].', \''.new_addslashes($info['filename']).'\')"/>':''?> <?php echo $info['status'] ? '<img src="statics/images/admin_img/link.png"':''?></td>
 <td width="10%" align="center"><?php echo $this->attachment->size($info['filesize'])?></td>
 <td width="12%"  align="center"><?php echo date('Y-m-d H:i:s',$info['uploadtime'])?></td>
-<td  align="center"><a href="javascript:preview(<?php echo $info['aid']?>, '<?php echo $info['filename']?>','<?php echo $this->upload_url.$info['filepath']?>')"><?php echo L('preview')?></a> | <a href="javascript:;" onclick="att_delete(this,'<?php echo $info['aid']?>')"><?php echo L('delete')?></a></td>
+<td  align="center"><a href="javascript:;" data-clipboard-text="<?php echo $this->upload_url.$info['filepath']?>" class="clipboard_btn">复制连接</a> | <a href="javascript:preview(<?php echo $info['aid']?>, '<?php echo $info['filename']?>','<?php echo $this->upload_url.$info['filepath']?>')"><?php echo L('preview')?></a> | <a href="javascript:;" onclick="att_delete(this,'<?php echo $info['aid']?>')"><?php echo L('delete')?></a></td>
 </tr>
 <?php 
 	}
@@ -84,56 +84,70 @@ if(is_array($infos)){
 
 </div>
 </div>
+<script type="text/javascript" src="<?php echo JS_PATH?>clipboard/2.0.6/clipboard.min.js"></script>
+<script type="text/javascript">
+    <!--
+    $(function () {
+        var clipboard = new ClipboardJS('.clipboard_btn');
+        console.log(clipboard)
+        clipboard.on('success', function(e) {
+            alert('已复制到剪切板，请去粘贴')
+            e.clearSelection();
+        });
+
+        clipboard.on('error', function(e) {
+            console.error('Action:', e.action);
+            console.error('Trigger:', e.trigger);
+        });
+    })
+    window.top.$('#display_center_id').css('display','none');
+    function preview(id, name,filepath) {
+        if(IsImg(filepath)) {
+            window.top.art.dialog({title:'<?php echo L('preview')?>',fixed:true, content:'<img src="'+filepath+'" onload="$(this).LoadImage(true, 500, 500,\'<?php echo IMG_PATH?>s_nopic.gif\');"/>'});
+        } else {
+            window.top.art.dialog({title:'<?php echo L('preview')?>',fixed:true, content:'<a href="'+filepath+'" target="_blank"><img src="<?php echo IMG_PATH?>admin_img/down.gif"><?php echo L('click_open')?></a>'});
+        }
+    }
+
+    function att_delete(obj,aid){
+        window.top.art.dialog({content:'<?php echo L('del_confirm')?>', fixed:true, style:'confirm', id:'att_delete'},
+            function(){
+                $.get('?m=attachment&c=manage&a=delete&aid='+aid+'&pc_hash=<?php echo $_SESSION['pc_hash']?>',function(data){
+                    if(data == 1) $(obj).parent().parent().fadeOut("slow");
+                })
+
+            },
+            function(){});
+    };
+
+    function showthumb(id, name) {
+        window.top.art.dialog({title:'<?php echo L('att_thumb_manage')?>--'+name, id:'edit', iframe:'?m=attachment&c=manage&a=pullic_showthumbs&aid='+id ,width:'500px',height:'400px'});
+    }
+    function hoverUse(target){
+        if($("#"+target).css("display") == "none"){
+            $("#"+target).show();
+        }else{
+            $("#"+target).hide();
+        }
+    }
+
+    function IsImg(url){
+        var sTemp;
+        var b=false;
+        var opt="jpg|gif|png|bmp|jpeg";
+        var s=opt.toUpperCase().split("|");
+        for (var i=0;i<s.length ;i++ ){
+            sTemp=url.substr(url.length-s[i].length-1);
+            sTemp=sTemp.toUpperCase();
+            s[i]="."+s[i];
+            if (s[i]==sTemp){
+                b=true;
+                break;
+            }
+        }
+        return b;
+    }
+    //-->
+</script>
 </body>
 </html>
-<script type="text/javascript">
-<!--
-window.top.$('#display_center_id').css('display','none');
-function preview(id, name,filepath) {
-	if(IsImg(filepath)) {
-		window.top.art.dialog({title:'<?php echo L('preview')?>',fixed:true, content:'<img src="'+filepath+'" onload="$(this).LoadImage(true, 500, 500,\'<?php echo IMG_PATH?>s_nopic.gif\');"/>'});	
-	} else {
-		window.top.art.dialog({title:'<?php echo L('preview')?>',fixed:true, content:'<a href="'+filepath+'" target="_blank"><img src="<?php echo IMG_PATH?>admin_img/down.gif"><?php echo L('click_open')?></a>'});
-	}
-}
-
-function att_delete(obj,aid){
-	 window.top.art.dialog({content:'<?php echo L('del_confirm')?>', fixed:true, style:'confirm', id:'att_delete'}, 
-	function(){
-	$.get('?m=attachment&c=manage&a=delete&aid='+aid+'&pc_hash=<?php echo $_SESSION['pc_hash']?>',function(data){
-				if(data == 1) $(obj).parent().parent().fadeOut("slow");
-			})
-		 	
-		 }, 
-	function(){});
-};
-
-function showthumb(id, name) {
-	window.top.art.dialog({title:'<?php echo L('att_thumb_manage')?>--'+name, id:'edit', iframe:'?m=attachment&c=manage&a=pullic_showthumbs&aid='+id ,width:'500px',height:'400px'});
-}
-function hoverUse(target){
-	if($("#"+target).css("display") == "none"){
-		$("#"+target).show();
-	}else{
-		$("#"+target).hide();
-	}
-}
-
-function IsImg(url){
-	  var sTemp;
-	  var b=false;
-	  var opt="jpg|gif|png|bmp|jpeg";
-	  var s=opt.toUpperCase().split("|");
-	  for (var i=0;i<s.length ;i++ ){
-	    sTemp=url.substr(url.length-s[i].length-1);
-	    sTemp=sTemp.toUpperCase();
-	    s[i]="."+s[i];
-	    if (s[i]==sTemp){
-	      b=true;
-	      break;
-	    }
-	  }
-	  return b;
-}
-//-->
-</script>
