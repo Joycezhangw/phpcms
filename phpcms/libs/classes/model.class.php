@@ -100,6 +100,17 @@ class model {
 	final public function insert($data, $return_insert_id = false, $replace = false) {
 		return $this->db->insert($data, $this->table_name, $return_insert_id, $replace);
 	}
+
+    /**
+     * 插入多条数据
+     * @param $data
+     * @param bool $replace
+     * @return mixed
+     */
+    final public function insertAll($data, $replace = false)
+    {
+        return $this->db->insertAll($data, $this->table_name, $replace);
+    }
 	
 	/**
 	 * 获取最后一次添加记录的主键号

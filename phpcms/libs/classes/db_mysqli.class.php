@@ -201,6 +201,69 @@ final class db_mysqli {
 		$return = $this->execute($sql);
 		return $return_insert_id ? $this->insert_id() : $return;
 	}
+
+    /**
+     * 批量插入数据
+     * @param $dataSet
+     * @param $table
+     * @param bool $replace
+     * @return 查询资源句柄
+     */
+    public function insertAll($dataSet,$table,$replace = false)
+    {
+        $allowFields = array_keys($dataSet[0]);
+        $values=[];
+        foreach ($dataSet as $data) {
+            $value = array();
+            foreach ($data as $key => $val) {
+                if (is_array($val) && 'exp' == $val[0]) {
+                    $value[] = $val[1];
+                } elseif (is_null($val)) {
+                    $value[] = 'NULL';
+                } elseif (is_scalar($val)) {
+                    $value[] = $this->parseValue($val);
+                }
+            }
+            $values[] = '(' . implode(',', $value) . ')';
+        }
+        // 兼容数字传入方式
+        $replace = (is_numeric($replace) && $replace > 0) ? true : $replace;
+        $sql     = (true === $replace ? 'REPLACE' : 'INSERT') . ' INTO `' .  $this->config['database'] . '`.`'.$table.'` (' . implode(',', $allowFields) . ') VALUES ' . implode(',', $values);
+        return $return = $this->execute($sql);
+    }
+
+    /**
+     * value分析
+     * @access protected
+     * @param mixed $value
+     * @return string
+     */
+    protected function parseValue($value)
+    {
+        if (is_string($value)) {
+            $value = '\'' . $this->escapeString($value) . '\'';
+        } elseif (isset($value[0]) && is_string($value[0]) && strtolower($value[0]) == 'exp') {
+            $value = $this->escapeString($value[1]);
+        } elseif (is_array($value)) {
+            $value = array_map(array($this, 'parseValue'), $value);
+        } elseif (is_bool($value)) {
+            $value = $value ? '1' : '0';
+        } elseif (is_null($value)) {
+            $value = 'null';
+        }
+        return $value;
+    }
+
+    /**
+     * SQL指令安全过滤
+     * @access public
+     * @param string $str  SQL字符串
+     * @return string
+     */
+    public function escapeString($str)
+    {
+        return addslashes($str);
+    }
 	
 	/**
 	 * 获取最后一次添加记录的主键号
