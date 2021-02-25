@@ -55,7 +55,7 @@ class index {
 			}
 			if($page==1 && !$setting['sphinxenable']) {
 				//精确搜索
-				$commend = $this->db->get_one("`typeid` = '$typeid' $sql_time AND `data` like '%$q%'");
+				$commend = $this->db->get_one("`isshow`=1 and `typeid` = '$typeid' $sql_time AND `data` like '%$q%'");
 			} else {
 				$commend = '';
 			}
@@ -78,9 +78,9 @@ class index {
 				$segment_q = $segment->get_keyword($segment->split_result($q));
 				//如果分词结果为空
 				if(!empty($segment_q)) {
-					$sql = "`siteid`= '$siteid' AND `typeid` = '$typeid' $sql_time AND MATCH (`data`) AGAINST ('$segment_q' IN BOOLEAN MODE)";
+					$sql = "`siteid`= '$siteid' AND isshow=1  AND `typeid` = '$typeid' $sql_time AND MATCH (`data`) AGAINST ('$segment_q' IN BOOLEAN MODE)";
 				} else {
-					$sql = "`siteid`= '$siteid' AND `typeid` = '$typeid' $sql_time AND `data` like '%$q%'";
+					$sql = "`siteid`= '$siteid' AND isshow=1  AND `typeid` = '$typeid' $sql_time AND `data` like '%$q%'";
 				}
 
 				$result = $this->db->listinfo($sql, 'searchid DESC', $page, 10);

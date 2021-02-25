@@ -72,6 +72,10 @@ class content_tag {
 			} else {
 				$sql = "status=99 AND catid='$catid'".$thumb;
 			}
+			//是否显示
+            if (isset($data['isshow'])){
+                $sql.='and isshow='.intval($data['isshow']);
+            }
 		}
 		$order = $data['order'];
 

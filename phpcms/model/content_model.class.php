@@ -393,19 +393,27 @@ class content_model extends model {
 	
 	
 	public function search_api($id = 0, $data = array(), $action = 'update') {
-		$type_arr = getcache('search_model_'.$this->siteid,'search');
-		$typeid = $type_arr[$this->modelid]['typeid'];
-		if($action == 'update') {
-			$fulltext_array = getcache('model_field_'.$this->modelid,'model');
-			foreach($fulltext_array AS $key=>$value){
-				if($value['isfulltext']) {
-					$fulltextcontent .= $data['system'][$key] ? $data['system'][$key] : $data['model'][$key];
-				}
-			}
-			$this->search_db->update_search($typeid ,$id, $fulltextcontent,addslashes($data['system']['title']).' '.addslashes($data['system']['keywords']),$data['system']['inputtime']);
-		} elseif($action == 'delete') {
-			$this->search_db->delete_search($typeid ,$id);
-		}
+        $type_arr = getcache('search_model_'.$this->siteid,'search');
+        $typeid = $type_arr[$this->modelid]['typeid'];
+        if($action == 'update') {
+            $fulltext_array = getcache('model_field_'.$this->modelid,'model');
+
+            foreach($fulltext_array AS $key=>$value){
+                if($value['isfulltext']) {
+                    $fulltextcontent .= $data['system'][$key] ? $data['system'][$key] : $data['model'][$key];
+                }
+            }
+            $this->search_db->update_search(
+                $typeid ,
+                $id,
+                $fulltextcontent,
+                addslashes($data['system']['title']).' '.addslashes($data['system']['keywords']),
+                $data['system']['inputtime'],
+                0,
+                isset($data['system']['isshow'])?intval($data['system']['isshow']):1);
+        } elseif($action == 'delete') {
+            $this->search_db->delete_search($typeid ,$id);
+        }
 	}
 	/**
 	 * 获取单篇信息
