@@ -940,10 +940,10 @@ CREATE TABLE `phpcms_search` (
   PRIMARY KEY (`searchid`),
   KEY `typeid` (`typeid`,`id`),
   KEY `siteid` (`siteid`),
-  Key `isshow` (`isshow`),
-  FULLTEXT KEY `data` (`data`)
+  Key `isshow` (`isshow`)
 ) ENGINE=InnoDB;
-
+-- 建立全文索引
+ALTER TABLE phpcms_search ADD FULLTEXT INDEX search_data_index (`data`) WITH PARSER ngram;
 -- ----------------------------
 -- Table structure for `phpcms_search_keyword`
 -- ----------------------------
