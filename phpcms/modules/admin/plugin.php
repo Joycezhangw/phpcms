@@ -408,7 +408,7 @@ EOF;
 		$id = intval($_GET['id']);
 		$data = file_get_contents('http://open.phpcms.cn/index.php?m=open&c=api&a=get_detail_byappid&id='.$id);
 		//$data = json_decode($data, true);
-		echo $_GET['jsoncallback'].'(',$data,')';
+        echo htmlspecialchars($_GET['jsoncallback'].'('.$data.')');
 		exit;		
 	}
 	
